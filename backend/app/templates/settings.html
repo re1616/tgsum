@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Настройки пользователя #{{ u.id }}</h2>
+  <form method="post" action="/settings">
+    <input type="hidden" name="user_id" value="{{ u.id }}"/>
+    <label>TZ</label><input name="tz" value="{{ u.tz }}"/>
+    <label>Час дайджеста</label><input name="digest_hour" type="number" min="0" max="23" value="{{ u.digest_hour }}"/>
+    <label>Макс. пунктов</label><input name="max_items" type="number" min="1" max="50" value="{{ u.max_items }}"/>
+    <label>Мин. score</label><input name="min_score" type="number" step="0.01" min="0" max="10" value="{{ u.min_score }}"/>
+    <label>Темы (CSV)</label><input name="topics" value="{{ u.topics or '' }}"/>
+    <label>Исключить каналы (CSV channel_id)</label><input name="exclude_channels" value="{{ u.exclude_channels or '' }}"/>
+    <label>Языки (CSV)</label><input name="languages" value="{{ u.languages or '' }}"/>
+    <label>Тихие часы (например 22-7)</label><input name="quiet_hours" value="{{ u.quiet_hours or '' }}"/>
+    <button type="submit">Сохранить</button>
+  </form>
+</div>
+{% endblock %}
