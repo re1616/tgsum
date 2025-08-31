@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  api:
+    build: ./backend
+    container_name: mvp_api
+    env_file: .env
+    volumes:
+      - app_data:/app/data
+    networks: [app_net]
+
+  bot:
+    build: ./bot
+    container_name: mvp_bot
+    env_file: .env
+    depends_on: [api]
+    networks: [app_net]
+
+  caddy:
+    image: caddy:2.8
+    container_name: mvp_caddy
+    restart: unless-stopped
+    ports: ["80:80","443:443"]
+    environment:
+      - DOMAIN=5.61.37.222.sslip.io
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [api]
+    networks: [app_net]
+
+networks:
+  app_net:
+
+volumes:
+  app_data:
+  caddy_data:
+  caddy_config:
