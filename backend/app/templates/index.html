@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+<form method="get" action="/">
+<label>User ID</label>
+<input name="user_id" type="number" value="{{ user.id if user else '' }}" />
+<button type="submit">Открыть</button>
+</form>
+</div>
+
+{% if user %}
+<div class="card">
+  <h2>Пользователь #{{ user.id }}</h2>
+  <p>TZ: {{ user.tz }}, час: {{ user.digest_hour }}, лимит: {{ user.max_items }}, порог: {{ '%.2f' % user.min_score }}</p>
+  <p><a href="/settings?user_id={{ user.id }}">Настройки</a></p>
+</div>
+{% endif %}
+
+{% if digest %}
+<div class="card">
+  <h2>Последний дайджест ({{ digest.date }})</h2>
+  {% for it in items %}
+  <div class="card">
+    <strong>{{ it.title }}</strong><br/>
+    <small>score {{ '%.2f' % it.score }} | https://t.me/c/{{ it.channel_id }}/{{ it.msg_id }}</small>
+    <p>{{ it.summary }}</p>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
